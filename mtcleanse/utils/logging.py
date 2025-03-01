@@ -1,4 +1,4 @@
-"""Logging utilities for the c3po package."""
+"""Logging utilities for the mtcleanse package."""
 
 import logging
 import sys
@@ -11,9 +11,9 @@ from rich.logging import RichHandler
 def configure_logging(
     level: str = "INFO",
     log_file: Optional[str] = None,
-    module_name: str = "c3po"
+    module_name: str = "mtcleanse"
 ) -> logging.Logger:
-    """Configure logging for the c3po package.
+    """Configure logging for the mtcleanse package.
     
     Args:
         level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)

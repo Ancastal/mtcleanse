@@ -1,7 +1,7 @@
-"""Utility functions for the c3po package."""
+"""Utility functions for the mtcleanse package."""
 
-from c3po.utils.logging import configure_logging, get_console
-from c3po.utils.file_utils import (
+from mtcleanse.utils.logging import configure_logging, get_console
+from mtcleanse.utils.file_utils import (
     ensure_dir,
     read_text_file,
     write_text_file,

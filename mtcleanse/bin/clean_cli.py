@@ -10,7 +10,7 @@ from typing import Dict, Any, Optional
 from rich.console import Console
 from rich.logging import RichHandler
 
-from c3po.cleaning import ParallelTextCleaner
+from mtcleanse.cleaning import ParallelTextCleaner
 
 # Configure logging
 logging.basicConfig(
@@ -19,7 +19,7 @@ logging.basicConfig(
     datefmt="[%X]",
     handlers=[RichHandler(rich_tracebacks=True)]
 )
-logger = logging.getLogger("c3po")
+logger = logging.getLogger("mtcleanse")
 console = Console()
 
 
@@ -261,7 +261,7 @@ def main() -> int:
     
     # Set log level
     if args.verbose:
-        logging.getLogger("c3po").setLevel(logging.DEBUG)
+        logging.getLogger("mtcleanse").setLevel(logging.DEBUG)
     
     # Validate arguments
     error = validate_args(args)

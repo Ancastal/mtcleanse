@@ -1,4 +1,4 @@
-"""File utilities for the c3po package."""
+"""File utilities for the mtcleanse package."""
 
 import json
 from pathlib import Path
