@@ -12,11 +12,11 @@ import torch
 from sklearn.ensemble import IsolationForest
 from sentence_transformers import SentenceTransformer
 
-from c3po.cleaning.config import CleaningConfig
-from c3po.cleaning.stats import CleaningStats
+from mtcleanse.cleaning.config import CleaningConfig
+from mtcleanse.cleaning.stats import CleaningStats
 
 # Configure logging
-logger = logging.getLogger("c3po")
+logger = logging.getLogger("mtcleanse")
 
 
 class TextCleaner:

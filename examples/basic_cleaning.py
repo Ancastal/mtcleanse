@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Basic example of using the c3po library for cleaning parallel text datasets."""
+"""Basic example of using the mtcleanse library for cleaning parallel text datasets."""
 
 import argparse
 import sys
 from pathlib import Path
 from textwrap import dedent
 
-from c3po.cleaning import ParallelTextCleaner
-from c3po.utils import configure_logging, get_console
+from mtcleanse.cleaning import ParallelTextCleaner
+from mtcleanse.utils import configure_logging, get_console
 
 # Configure logging
 logger = configure_logging(level="INFO")
@@ -17,7 +17,7 @@ console = get_console()
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        description="Example of using c3po for cleaning parallel text datasets."
+        description="Example of using mtcleanse for cleaning parallel text datasets."
     )
     
     parser.add_argument(

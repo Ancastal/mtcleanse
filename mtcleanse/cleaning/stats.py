@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Any
 import numpy as np
 
 # Configure logging
-logger = logging.getLogger("c3po")
+logger = logging.getLogger("mtcleanse")
 
 
 def convert_to_serializable(obj: Any) -> Any:

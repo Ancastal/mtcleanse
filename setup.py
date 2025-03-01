@@ -4,16 +4,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="c3po",
+    name="mtcleanse",
     version="0.1.0",
     author="Antonio Castaldo",
     author_email="antonio.castaldo@phd.unipi.it",
-    description="Corpus Cleaning and Processing Operations",
+    description="Machine Translation Corpus Cleaning and Processing",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Ancastal/c3po",
+    url="https://github.com/Ancastal/mtcleanse",
     project_urls={
-        "Bug Tracker": "https://github.com/Ancastal/c3po/issues",
+        "Bug Tracker": "https://github.com/Ancastal/mtcleanse/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -47,7 +47,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "c3po-clean=c3po.bin.clean_cli:main",
+            "mtcleanse-clean=mtcleanse.bin.clean_cli:main",
         ],
     },
 ) 

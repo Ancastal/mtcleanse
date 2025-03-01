@@ -6,8 +6,8 @@ from typing import Dict, List, Tuple, Optional, Union
 
 from rich.logging import RichHandler
 
-from c3po.cleaning.config import CleaningConfig
-from c3po.cleaning.clean import TextCleaner
+from mtcleanse.cleaning.config import CleaningConfig
+from mtcleanse.cleaning.clean import TextCleaner
 
 # Configure logging
 logging.basicConfig(
@@ -16,7 +16,7 @@ logging.basicConfig(
     datefmt="[%X]",
     handlers=[RichHandler(rich_tracebacks=True)]
 )
-logger = logging.getLogger("c3po")
+logger = logging.getLogger("mtcleanse")
 
 
 class ParallelTextCleaner:

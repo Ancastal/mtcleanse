@@ -1,11 +1,11 @@
-"""Tests for the c3po.cleaning module."""
+"""Tests for the mtcleanse.cleaning module."""
 
 import unittest
 from pathlib import Path
 import tempfile
 import shutil
 
-from c3po.cleaning import ParallelTextCleaner, CleaningConfig
+from mtcleanse.cleaning import ParallelTextCleaner, CleaningConfig
 
 
 class TestParallelTextCleaner(unittest.TestCase):

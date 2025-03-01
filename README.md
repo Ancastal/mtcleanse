@@ -1,6 +1,6 @@
-# C3PO: Corpus Cleaning and Processing Operations
+# MTCleanse: Machine Translation Corpus Cleaning and Processing
 
-C3PO is a Python library for cleaning and processing parallel text datasets, particularly useful for machine translation and other NLP tasks.
+MTCleanse is a Python library for cleaning and processing parallel text datasets, particularly useful for machine translation and other NLP tasks.
 
 ## Features
 
@@ -15,21 +15,21 @@ C3PO is a Python library for cleaning and processing parallel text datasets, par
 ## Installation
 
 ```bash
-pip install c3po
+pip install mtcleanse
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/yourusername/c3po.git
-cd c3po
+git clone https://github.com/yourusername/mtcleanse.git
+cd mtcleanse
 pip install -e .
 ```
 
 ## Quick Start
 
 ```python
-from c3po.cleaning import ParallelTextCleaner
+from mtcleanse.cleaning import ParallelTextCleaner
 
 # Initialize with default settings
 cleaner = ParallelTextCleaner()
@@ -50,10 +50,10 @@ clean_source, clean_target = cleaner.clean_texts(source_texts, target_texts)
 
 ## Command Line Interface
 
-C3PO also provides a command-line interface:
+MTCleanse also provides a command-line interface:
 
 ```bash
-c3po-clean --source source.en --target target.fr --output-source clean_source.en --output-target clean_target.fr
+mtcleanse-clean --source source.en --target target.fr --output-source clean_source.en --output-target clean_target.fr
 ```
 
 ## Configuration
@@ -77,14 +77,14 @@ cleaner = ParallelTextCleaner({
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/c3po.git
-cd c3po
+git clone https://github.com/yourusername/mtcleanse.git
+cd mtcleanse
 
 # Install in development mode with development dependencies
 pip install -e ".[dev]"
 
 # Run tests
-pytest tests/ --cov=c3po
+pytest tests/ --cov=mtcleanse
 ```
 
 ## License

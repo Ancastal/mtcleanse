@@ -31,7 +31,7 @@ jobs:
     
     - name: Run tests
       run: |
-        pytest tests/ --cov=c3po
+        pytest tests/ --cov=mtcleanse
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3

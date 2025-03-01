@@ -24,14 +24,14 @@ jobs:
     
     - name: Check code formatting with Black
       run: |
-        black --check c3po tests examples
+        black --check mtcleanse tests examples
     
     - name: Check imports with isort
       run: |
-        isort --check-only --profile black c3po tests examples
+        isort --check-only --profile black mtcleanse tests examples
     
     - name: Lint with flake8
       run: |
-        flake8 c3po tests examples --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 mtcleanse tests examples --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings
-        flake8 c3po tests examples --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics 
+        flake8 mtcleanse tests examples --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics 
