@@ -86,6 +86,10 @@ cd mtcleanse
 # Install in development mode with development dependencies
 pip install -e ".[dev]"
 
+# Install pre-commit hooks
+pip install pre-commit
+pre-commit install
+
 # Run tests
 pytest tests/ --cov=mtcleanse
 ```
@@ -96,4 +100,4 @@ pytest tests/ --cov=mtcleanse
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. 
+Contributions are welcome! Please feel free to submit a Pull Request.

@@ -43,6 +43,7 @@ setup(
             "flake8>=6.0.0",
             "build>=0.10.0",
             "twine>=4.0.0",
+            "pre-commit>=3.0.0",
         ],
     },
     entry_points={

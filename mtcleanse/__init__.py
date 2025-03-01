@@ -6,6 +6,6 @@ particularly useful for machine translation and other NLP tasks.
 
 __version__ = "0.1.0"
 
-from mtcleanse.cleaning import ParallelTextCleaner, CleaningConfig
+from mtcleanse.cleaning import CleaningConfig, ParallelTextCleaner
 
-__all__ = ['ParallelTextCleaner', 'CleaningConfig']
+__all__ = ["ParallelTextCleaner", "CleaningConfig"]

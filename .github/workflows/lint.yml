@@ -22,16 +22,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install black isort flake8
     
-    - name: Check code formatting with Black
+    - name: Format code with Black
       run: |
-        black --check mtcleanse tests examples
+        black mtcleanse tests examples
     
-    - name: Check imports with isort
+    - name: Fix imports with isort
       run: |
-        isort --check-only --profile black mtcleanse tests examples
+        isort --profile black mtcleanse tests examples
     
     - name: Lint with flake8
       run: |
         flake8 mtcleanse tests examples --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings
-        flake8 mtcleanse tests examples --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics 
+        flake8 mtcleanse tests examples --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
+    - name: Commit changes if any
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Apply automatic formatting with Black and isort" && git push) 
