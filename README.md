@@ -1,4 +1,4 @@
-# MTCleanse: Machine Translation Corpus Cleaning and Processing
+# MTCleanse: Machine Translation Corpus Cleaning
 
 [![PyPI version](https://badge.fury.io/py/mtcleanse.svg)](https://badge.fury.io/py/mtcleanse)
 [![Python versions](https://img.shields.io/pypi/pyversions/mtcleanse.svg)](https://pypi.org/project/mtcleanse/)
