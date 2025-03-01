@@ -3,7 +3,9 @@
 [![PyPI version](https://badge.fury.io/py/mtcleanse.svg)](https://badge.fury.io/py/mtcleanse)
 [![Python versions](https://img.shields.io/pypi/pyversions/mtcleanse.svg)](https://pypi.org/project/mtcleanse/)
 
-MTCleanse is a powerful, state-of-the-art toolkit designed for cleaning and preprocessing parallel corpora to be used for neural machine translation (NMT) systems. Built for researchers, language technologists, and ML practitioners, it addresses the critical "garbage in, garbage out" problem that plagues many translation models. By systematically removing noise, detecting misalignments, filtering problematic sentence pairs, and handling outliers, MTCleanse significantly improves the quality of training data - leading to more accurate, robust, and reliable translation models.
+MTCleanse is a powerful, state-of-the-art toolkit designed for cleaning and preprocessing parallel corpora to be used for neural machine translation (NMT) systems. Built for researchers, language technologists, and MT practitioners, it addresses the critical "garbage in, garbage out" problem that plagues many translation models.
+
+By systematically removing noise, detecting misalignments, filtering problematic sentence pairs, and handling outliers, MTCleanse significantly improves the quality of training data, leading to more accurate, robust, and reliable translation models.
 
 ## Features
 
@@ -39,7 +41,7 @@ cleaner = ParallelTextCleaner()
 
 # Clean parallel text files
 cleaner.clean_files(
-    source_file="source.en", 
+    source_file="source.en",
     target_file="target.fr",
     output_source="clean_source.en",
     output_target="clean_target.fr"
