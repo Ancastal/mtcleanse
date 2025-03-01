@@ -1,6 +1,7 @@
 # MTCleanse: Machine Translation Corpus Cleaning and Processing
 
-MTCleanse is a Python library for cleaning and processing parallel text datasets, particularly useful for machine translation and other NLP tasks.
+[![PyPI version](https://badge.fury.io/py/mtcleanse.svg)](https://badge.fury.io/py/mtcleanse)
+[![Python versions](https://img.shields.io/pypi/pyversions/mtcleanse.svg)](https://pypi.org/project/mtcleanse/)
 
 ## Features
 
