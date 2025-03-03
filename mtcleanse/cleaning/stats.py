@@ -28,7 +28,9 @@ def convert_to_serializable(obj: Any) -> Any:
     elif isinstance(obj, np.ndarray):
         return obj.tolist()
     elif isinstance(obj, dict):
-        return {key: convert_to_serializable(value) for key, value in obj.items()}
+        return {
+            key: convert_to_serializable(value) for key, value in obj.items()
+        }
     elif isinstance(obj, (list, tuple)):
         return [convert_to_serializable(item) for item in obj]
     return round(obj, 2) if isinstance(obj, float) else obj
@@ -55,9 +57,15 @@ class FilteredSamples:
     too_short_samples: List[Tuple[str, str]] = field(default_factory=list)
     too_long_samples: List[Tuple[str, str]] = field(default_factory=list)
     word_count_samples: List[Tuple[str, str]] = field(default_factory=list)
-    length_outliers_samples: List[Tuple[str, str]] = field(default_factory=list)
-    domain_outliers_samples: List[Tuple[str, str]] = field(default_factory=list)
-    quality_filtered_samples: List[Tuple[str, str]] = field(default_factory=list)
+    length_outliers_samples: List[Tuple[str, str]] = field(
+        default_factory=list
+    )
+    domain_outliers_samples: List[Tuple[str, str]] = field(
+        default_factory=list
+    )
+    quality_filtered_samples: List[Tuple[str, str]] = field(
+        default_factory=list
+    )
 
     def to_dict(self, max_samples: int = 5) -> Dict:
         """Convert samples to dictionary, limiting each category to max_samples examples.
@@ -69,7 +77,9 @@ class FilteredSamples:
             Dictionary of sample categories
         """
         return {
-            "empty_samples": [list(pair) for pair in self.empty_samples[:max_samples]],
+            "empty_samples": [
+                list(pair) for pair in self.empty_samples[:max_samples]
+            ],
             "too_short_samples": [
                 list(pair) for pair in self.too_short_samples[:max_samples]
             ],
@@ -80,13 +90,16 @@ class FilteredSamples:
                 list(pair) for pair in self.word_count_samples[:max_samples]
             ],
             "length_outliers_samples": [
-                list(pair) for pair in self.length_outliers_samples[:max_samples]
+                list(pair)
+                for pair in self.length_outliers_samples[:max_samples]
             ],
             "domain_outliers_samples": [
-                list(pair) for pair in self.domain_outliers_samples[:max_samples]
+                list(pair)
+                for pair in self.domain_outliers_samples[:max_samples]
             ],
             "quality_filtered_samples": [
-                list(pair) for pair in self.quality_filtered_samples[:max_samples]
+                list(pair)
+                for pair in self.quality_filtered_samples[:max_samples]
             ],
         }
 
@@ -178,17 +191,33 @@ class CleaningStats:
         """Log the cleaning statistics."""
         logger.info("Cleaning Statistics:")
         logger.info(f"Total pairs processed: {self.total_pairs}")
-        logger.info(f"Pairs empty after basic cleaning: {self.empty_after_cleaning}")
-        logger.info(f"Pairs too short (<{self.min_chars} chars): {self.too_short}")
-        logger.info(f"Pairs too long (>{self.max_chars} chars): {self.too_long}")
-        logger.info(f"Pairs filtered by word count: {self.word_count_filtered}")
-        logger.info(f"Pairs identified as length outliers: {self.length_outliers}")
-        logger.info(f"Pairs identified as domain outliers: {self.domain_outliers}")
-        logger.info(f"Pairs filtered by quality estimation: {self.quality_filtered}")
+        logger.info(
+            f"Pairs empty after basic cleaning: {self.empty_after_cleaning}"
+        )
+        logger.info(
+            f"Pairs too short (<{self.min_chars} chars): {self.too_short}"
+        )
+        logger.info(
+            f"Pairs too long (>{self.max_chars} chars): {self.too_long}"
+        )
+        logger.info(
+            f"Pairs filtered by word count: {self.word_count_filtered}"
+        )
+        logger.info(
+            f"Pairs identified as length outliers: {self.length_outliers}"
+        )
+        logger.info(
+            f"Pairs identified as domain outliers: {self.domain_outliers}"
+        )
+        logger.info(
+            f"Pairs filtered by quality estimation: {self.quality_filtered}"
+        )
         logger.info(f"Final pairs remaining: {self.final_pairs}")
 
         if self.total_pairs > 0:
-            reduction = (self.total_pairs - self.final_pairs) / self.total_pairs * 100
+            reduction = (
+                (self.total_pairs - self.final_pairs) / self.total_pairs * 100
+            )
             logger.info(f"Total reduction: {reduction:.2f}%")
         else:
             logger.info("Total reduction: 0.00%")

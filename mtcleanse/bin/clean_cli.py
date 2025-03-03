@@ -54,7 +54,9 @@ def parse_args() -> argparse.Namespace:
         help="Path to save cleaned target text (default: clean_<target>)",
     )
     parser.add_argument(
-        "--stats-output", "-so", help="Path to save cleaning statistics as JSON"
+        "--stats-output",
+        "-so",
+        help="Path to save cleaning statistics as JSON",
     )
     parser.add_argument(
         "--filtered-source", "-fs", help="Path to save filtered source text"
@@ -101,12 +103,17 @@ def parse_args() -> argparse.Namespace:
         help="Expected proportion of statistical outliers",
     )
     parser.add_argument(
-        "--random-state", type=int, default=42, help="Random seed for reproducibility"
+        "--random-state",
+        type=int,
+        default=42,
+        help="Random seed for reproducibility",
     )
 
     # Boolean flags
     parser.add_argument(
-        "--no-remove-urls", action="store_true", help="Don't remove URLs from texts"
+        "--no-remove-urls",
+        action="store_true",
+        help="Don't remove URLs from texts",
     )
     parser.add_argument(
         "--no-remove-emails",
@@ -150,10 +157,15 @@ def parse_args() -> argparse.Namespace:
         help="Expected proportion of domain outliers",
     )
     parser.add_argument(
-        "--batch-size", type=int, default=32, help="Batch size for embedding generation"
+        "--batch-size",
+        type=int,
+        default=32,
+        help="Batch size for embedding generation",
     )
     parser.add_argument(
-        "--cpu", action="store_true", help="Force using CPU for embedding generation"
+        "--cpu",
+        action="store_true",
+        help="Force using CPU for embedding generation",
     )
 
     # Verbosity

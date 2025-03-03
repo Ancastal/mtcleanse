@@ -2,7 +2,6 @@
 
 import json
 import logging
-
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -69,7 +68,9 @@ class TextCleaner:
             Tuple of (cleaned source texts, cleaned target texts)
         """
         if len(source_texts) != len(target_texts):
-            raise ValueError("Source and target texts must have the same length")
+            raise ValueError(
+                "Source and target texts must have the same length"
+            )
 
         # Reset statistics
         self.stats = CleaningStats()
@@ -80,7 +81,9 @@ class TextCleaner:
         # Re-initialize filters with new stats object
         self._initialize_filters()
 
-        logger.info(f"Starting cleaning process for {len(source_texts)} text pairs...")
+        logger.info(
+            f"Starting cleaning process for {len(source_texts)} text pairs..."
+        )
 
         # Apply each filter in sequence
         filtered_source, filtered_target = source_texts, target_texts

@@ -9,7 +9,9 @@ from rich.logging import RichHandler
 
 
 def configure_logging(
-    level: str = "INFO", log_file: Optional[str] = None, module_name: str = "mtcleanse"
+    level: str = "INFO",
+    log_file: Optional[str] = None,
+    module_name: str = "mtcleanse",
 ) -> logging.Logger:
     """Configure logging for the mtcleanse package.
 
@@ -36,7 +38,9 @@ def configure_logging(
     if log_file:
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(
-            logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+            logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
         )
         handlers.append(file_handler)
 

@@ -69,7 +69,9 @@ class CleaningConfig:
 
     # Quality filtering options
     enable_quality_filtering: bool = False
-    quality_model: str = "Unbabel/wmt22-cometkiwi-da"  # Direct assessment model
+    quality_model: str = (
+        "Unbabel/wmt22-cometkiwi-da"  # Direct assessment model
+    )
     quality_threshold: float = 0.5  # Default threshold (higher=better quality)
     quality_batch_size: int = 8  # Batch size for quality prediction
     source_lang: str = "en"  # Source language code

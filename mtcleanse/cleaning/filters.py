@@ -8,7 +8,7 @@ import logging
 import re
 import unicodedata
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Tuple
 
 import numpy as np
 import torch
@@ -52,7 +52,6 @@ class Filter(ABC):
         Returns:
             Tuple of (filtered_source_texts, filtered_target_texts)
         """
-        pass
 
 
 class BasicCleaningFilter(Filter):
@@ -141,7 +140,9 @@ class BasicCleaningFilter(Filter):
             Tuple of (filtered_source_texts, filtered_target_texts)
         """
         if len(source_texts) != len(target_texts):
-            raise ValueError("Source and target texts must have the same length")
+            raise ValueError(
+                "Source and target texts must have the same length"
+            )
 
         filtered_source = []
         filtered_target = []
@@ -317,7 +318,9 @@ class DomainOutlierFilter(Filter):
             logger.info(
                 f"Loading sentence transformer model: {self.config.embedding_model}"
             )
-            self.sentence_transformer = SentenceTransformer(self.config.embedding_model)
+            self.sentence_transformer = SentenceTransformer(
+                self.config.embedding_model
+            )
             self.sentence_transformer.to(self.config.device)
 
     def _get_embeddings(self, texts: List[str]) -> np.ndarray:
@@ -360,7 +363,9 @@ class DomainOutlierFilter(Filter):
         if not self.config.enable_domain_filtering or not source_texts:
             return source_texts, target_texts  # Skip filtering
 
-        logger.info(f"Performing domain filtering on {len(source_texts)} pairs...")
+        logger.info(
+            f"Performing domain filtering on {len(source_texts)} pairs..."
+        )
 
         # Generate embeddings for source and target texts
         source_embeddings = self._get_embeddings(source_texts)
@@ -433,7 +438,10 @@ class QualityFilter(Filter):
         super().__init__(config, stats)
         # Initialize quality filter if quality filtering is enabled
         self.quality_filter = None
-        if self.config.enable_quality_filtering and KiwiQualityFilter is not None:
+        if (
+            self.config.enable_quality_filtering
+            and KiwiQualityFilter is not None
+        ):
             logger.info(
                 f"Initializing CometKiwi quality filter with model: {self.config.quality_model}"
             )
@@ -463,7 +471,9 @@ class QualityFilter(Filter):
         ):
             return source_texts, target_texts  # Skip filtering
 
-        logger.info(f"Performing quality filtering on {len(source_texts)} pairs...")
+        logger.info(
+            f"Performing quality filtering on {len(source_texts)} pairs..."
+        )
 
         # Score and filter the pairs
         (

@@ -6,7 +6,7 @@ without reference translations using Unbabel's CometKiwi model.
 
 import logging
 import statistics
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -82,7 +82,7 @@ class KiwiQualityFilter:
             self._model.to(self.device)
             self._model.eval()
 
-            logger.info(f"CometKiwi model loaded successfully.")
+            logger.info("CometKiwi model loaded successfully.")
 
     def score_pairs(
         self,
@@ -153,7 +153,9 @@ class KiwiQualityFilter:
         print(scores[:10])
 
         if len(scores) != len(sources):
-            logger.error(f"Got {len(scores)} scores but expected {len(sources)}")
+            logger.error(
+                f"Got {len(scores)} scores but expected {len(sources)}"
+            )
             raise ValueError(
                 f"Number of scores ({len(scores)}) doesn't match number of inputs ({len(sources)})"
             )
@@ -181,7 +183,9 @@ class KiwiQualityFilter:
                      filtered sources, filtered translations, all scores)
         """
         # Score all pairs
-        scores = self.score_pairs(sources, translations, source_lang, target_lang)
+        scores = self.score_pairs(
+            sources, translations, source_lang, target_lang
+        )
 
         # Filter based on threshold
         cleaned_sources = []

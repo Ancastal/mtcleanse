@@ -19,7 +19,9 @@ def ensure_dir(path: Union[str, Path]) -> Path:
     return path_obj
 
 
-def read_text_file(file_path: Union[str, Path], encoding: str = "utf-8") -> List[str]:
+def read_text_file(
+    file_path: Union[str, Path], encoding: str = "utf-8"
+) -> List[str]:
     """Read a text file and return a list of lines.
 
     Args:
@@ -165,7 +167,11 @@ def write_parallel_json(
 
     data = []
     for src, tgt in zip(source_lines, target_lines):
-        example = {"instruction": instruction or "", "input": src, "target": tgt}
+        example = {
+            "instruction": instruction or "",
+            "input": src,
+            "target": tgt,
+        }
         data.append(example)
 
     write_json(data, output_file, encoding)
