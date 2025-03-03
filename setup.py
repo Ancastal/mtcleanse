@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -45,10 +45,13 @@ setup(
             "twine>=4.0.0",
             "pre-commit>=3.0.0",
         ],
+        "quality": [
+            "unbabel-comet>=2.0.0",
+        ],
     },
     entry_points={
         "console_scripts": [
             "mtcleanse-clean=mtcleanse.bin.clean_cli:main",
         ],
     },
-) 
+)

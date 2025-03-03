@@ -2,9 +2,9 @@
 
 import json
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
@@ -46,25 +46,18 @@ class FilteredSamples:
         too_short_samples: Samples that were too short
         too_long_samples: Samples that were too long
         word_count_samples: Samples that had too few or too many words
-        statistical_outliers_samples: Samples identified as statistical outliers
+        length_outliers_samples: Samples identified as length outliers
         domain_outliers_samples: Samples identified as domain outliers
+        quality_filtered_samples: Samples filtered by quality estimation
     """
 
-    empty_samples: List[Tuple[str, str]] = None
-    too_short_samples: List[Tuple[str, str]] = None
-    too_long_samples: List[Tuple[str, str]] = None
-    word_count_samples: List[Tuple[str, str]] = None
-    statistical_outliers_samples: List[Tuple[str, str]] = None
-    domain_outliers_samples: List[Tuple[str, str]] = None
-
-    def __post_init__(self):
-        """Initialize empty lists."""
-        self.empty_samples = []
-        self.too_short_samples = []
-        self.too_long_samples = []
-        self.word_count_samples = []
-        self.statistical_outliers_samples = []
-        self.domain_outliers_samples = []
+    empty_samples: List[Tuple[str, str]] = field(default_factory=list)
+    too_short_samples: List[Tuple[str, str]] = field(default_factory=list)
+    too_long_samples: List[Tuple[str, str]] = field(default_factory=list)
+    word_count_samples: List[Tuple[str, str]] = field(default_factory=list)
+    length_outliers_samples: List[Tuple[str, str]] = field(default_factory=list)
+    domain_outliers_samples: List[Tuple[str, str]] = field(default_factory=list)
+    quality_filtered_samples: List[Tuple[str, str]] = field(default_factory=list)
 
     def to_dict(self, max_samples: int = 5) -> Dict:
         """Convert samples to dictionary, limiting each category to max_samples examples.
@@ -75,27 +68,27 @@ class FilteredSamples:
         Returns:
             Dictionary of sample categories
         """
-        samples_dict = {}
-
-        # Only include non-empty sample categories
-        if self.empty_samples:
-            samples_dict["empty_samples"] = self.empty_samples[:max_samples]
-        if self.too_short_samples:
-            samples_dict["too_short_samples"] = self.too_short_samples[:max_samples]
-        if self.too_long_samples:
-            samples_dict["too_long_samples"] = self.too_long_samples[:max_samples]
-        if self.word_count_samples:
-            samples_dict["word_count_samples"] = self.word_count_samples[:max_samples]
-        if self.statistical_outliers_samples:
-            samples_dict["statistical_outliers_samples"] = (
-                self.statistical_outliers_samples[:max_samples]
-            )
-        if self.domain_outliers_samples:
-            samples_dict["domain_outliers_samples"] = self.domain_outliers_samples[
-                :max_samples
-            ]
-
-        return samples_dict
+        return {
+            "empty_samples": [list(pair) for pair in self.empty_samples[:max_samples]],
+            "too_short_samples": [
+                list(pair) for pair in self.too_short_samples[:max_samples]
+            ],
+            "too_long_samples": [
+                list(pair) for pair in self.too_long_samples[:max_samples]
+            ],
+            "word_count_samples": [
+                list(pair) for pair in self.word_count_samples[:max_samples]
+            ],
+            "length_outliers_samples": [
+                list(pair) for pair in self.length_outliers_samples[:max_samples]
+            ],
+            "domain_outliers_samples": [
+                list(pair) for pair in self.domain_outliers_samples[:max_samples]
+            ],
+            "quality_filtered_samples": [
+                list(pair) for pair in self.quality_filtered_samples[:max_samples]
+            ],
+        }
 
 
 @dataclass
@@ -111,12 +104,14 @@ class CleaningStats:
         too_short: Number of pairs that were too short
         too_long: Number of pairs that were too long
         word_count_filtered: Number of pairs filtered by word count
-        statistical_outliers: Number of pairs identified as statistical outliers
+        length_outliers: Number of pairs identified as length outliers
         domain_outliers: Number of pairs identified as domain outliers
+        quality_filtered: Number of pairs filtered by quality estimation
         final_pairs: Number of pairs remaining after cleaning
         min_chars: Minimum character count used for filtering
         max_chars: Maximum character count used for filtering
         length_stats: Statistics about text lengths
+        quality_stats: Statistics about quality scores
         filtered_samples: Examples of filtered text pairs
     """
 
@@ -125,18 +120,15 @@ class CleaningStats:
     too_short: int = 0
     too_long: int = 0
     word_count_filtered: int = 0
-    statistical_outliers: int = 0
+    length_outliers: int = 0
     domain_outliers: int = 0
+    quality_filtered: int = 0
     final_pairs: int = 0
     min_chars: int = 0
     max_chars: int = 0
-    length_stats: Dict = None
-    filtered_samples: FilteredSamples = None
-
-    def __post_init__(self):
-        """Initialize nested objects."""
-        self.length_stats = {}
-        self.filtered_samples = FilteredSamples()
+    length_stats: Dict = field(default_factory=dict)
+    quality_stats: Dict = field(default_factory=dict)
+    filtered_samples: FilteredSamples = field(default_factory=FilteredSamples)
 
     def to_dict(self) -> Dict:
         """Convert stats to dictionary format for JSON export.
@@ -150,12 +142,14 @@ class CleaningStats:
             "too_short": int(self.too_short),
             "too_long": int(self.too_long),
             "word_count_filtered": int(self.word_count_filtered),
-            "statistical_outliers": int(self.statistical_outliers),
+            "length_outliers": int(self.length_outliers),
             "domain_outliers": int(self.domain_outliers),
+            "quality_filtered": int(self.quality_filtered),
             "final_pairs": int(self.final_pairs),
             "min_chars": int(self.min_chars),
             "max_chars": int(self.max_chars),
-            "length_stats": convert_to_serializable(self.length_stats),
+            "length_stats": self.length_stats,
+            "quality_stats": self.quality_stats,
             "filtered_samples": self.filtered_samples.to_dict(),
         }
 
@@ -188,10 +182,9 @@ class CleaningStats:
         logger.info(f"Pairs too short (<{self.min_chars} chars): {self.too_short}")
         logger.info(f"Pairs too long (>{self.max_chars} chars): {self.too_long}")
         logger.info(f"Pairs filtered by word count: {self.word_count_filtered}")
-        logger.info(
-            f"Pairs identified as statistical outliers: {self.statistical_outliers}"
-        )
+        logger.info(f"Pairs identified as length outliers: {self.length_outliers}")
         logger.info(f"Pairs identified as domain outliers: {self.domain_outliers}")
+        logger.info(f"Pairs filtered by quality estimation: {self.quality_filtered}")
         logger.info(f"Final pairs remaining: {self.final_pairs}")
 
         if self.total_pairs > 0:

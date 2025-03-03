@@ -30,6 +30,12 @@ class CleaningConfig:
         domain_contamination: Expected proportion of domain outliers
         batch_size: Batch size for embedding generation
         device: Device to use for embedding generation (cuda or cpu)
+        enable_quality_filtering: Whether to enable quality filtering
+        quality_model: Name of the CometKiwi model to use
+        quality_threshold: Threshold for quality filtering
+        quality_batch_size: Batch size for quality prediction
+        source_lang: Source language code for CometKiwi
+        target_lang: Target language code for CometKiwi
     """
 
     # Length-based cleaning
@@ -60,6 +66,14 @@ class CleaningConfig:
     device: str = (
         "cuda" if torch.cuda.is_available() else "cpu"
     )  # Device for embedding generation
+
+    # Quality filtering options
+    enable_quality_filtering: bool = False
+    quality_model: str = "Unbabel/wmt22-cometkiwi-da"  # Direct assessment model
+    quality_threshold: float = 0.5  # Default threshold (higher=better quality)
+    quality_batch_size: int = 8  # Batch size for quality prediction
+    source_lang: str = "en"  # Source language code
+    target_lang: str = "xx"  # Target language code (xx for auto-detect)
 
     @classmethod
     def from_dict(cls, config_dict=None):

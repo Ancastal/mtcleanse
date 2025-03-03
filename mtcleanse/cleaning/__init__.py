@@ -1,4 +1,8 @@
-"""Cleaning module for parallel text datasets."""
+"""Cleaning module for text data preprocessing.
+
+This module provides classes and functions for cleaning and preprocessing
+parallel text datasets for machine translation.
+"""
 
 import logging
 from pathlib import Path
@@ -8,6 +12,15 @@ from rich.logging import RichHandler
 
 from mtcleanse.cleaning.clean import TextCleaner
 from mtcleanse.cleaning.config import CleaningConfig
+from mtcleanse.cleaning.filters import (
+    BasicCleaningFilter,
+    DomainOutlierFilter,
+    Filter,
+    LengthOutlierFilter,
+    QualityFilter,
+)
+from mtcleanse.cleaning.kiwi_filter import KiwiQualityFilter
+from mtcleanse.cleaning.stats import CleaningStats
 
 # Configure logging
 logging.basicConfig(
@@ -19,8 +32,12 @@ logging.basicConfig(
 logger = logging.getLogger("mtcleanse")
 
 
-class ParallelTextCleaner:
-    """High-level interface for cleaning parallel text datasets."""
+class ParallelTextCleaner(TextCleaner):
+    """Main user-facing class for cleaning parallel text datasets.
+
+    This class inherits from TextCleaner and provides the same functionality
+    with a simplified interface.
+    """
 
     def __init__(self, config: Optional[Dict] = None):
         """
@@ -32,6 +49,21 @@ class ParallelTextCleaner:
         # Create cleaning config and cleaner
         self.config = CleaningConfig.from_dict(config)
         self.cleaner = TextCleaner(self.config)
+
+    def clean_texts(
+        self, source_texts: List[str], target_texts: List[str]
+    ) -> Tuple[List[str], List[str]]:
+        """
+        Clean parallel texts directly from lists of strings.
+
+        Args:
+            source_texts: List of source language texts
+            target_texts: List of target language texts
+
+        Returns:
+            Tuple of (cleaned source texts, cleaned target texts)
+        """
+        return self.clean_parallel_texts(source_texts, target_texts)
 
     def clean_files(
         self,
@@ -71,7 +103,7 @@ class ParallelTextCleaner:
             target_path = Path(target_file)
             output_target = target_path.parent / f"clean_{target_path.name}"
 
-        return self.cleaner.clean_file(
+        return self.clean_file(
             source_file=str(source_file),
             target_file=str(target_file),
             output_source=str(output_source),
@@ -83,25 +115,21 @@ class ParallelTextCleaner:
             instruction=instruction,
         )
 
-    def clean_texts(
-        self, source_texts: List[str], target_texts: List[str]
-    ) -> Tuple[List[str], List[str]]:
-        """
-        Clean parallel texts directly from lists of strings.
-
-        Args:
-            source_texts: List of source language texts
-            target_texts: List of target language texts
-
-        Returns:
-            Tuple of (cleaned source texts, cleaned target texts)
-        """
-        return self.cleaner.clean_parallel_texts(source_texts, target_texts)
-
     def get_stats(self) -> Dict:
         """Get statistics from the latest cleaning operation."""
         return self.cleaner.stats.to_dict()
 
 
 # Export public classes and functions
-__all__ = ["ParallelTextCleaner", "CleaningConfig"]
+__all__ = [
+    "TextCleaner",
+    "ParallelTextCleaner",
+    "CleaningConfig",
+    "CleaningStats",
+    "KiwiQualityFilter",
+    "Filter",
+    "BasicCleaningFilter",
+    "LengthOutlierFilter",
+    "DomainOutlierFilter",
+    "QualityFilter",
+]
