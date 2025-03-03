@@ -8,6 +8,8 @@ from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
+from mtcleanse.cleaning.report import generate_html_report
+
 # Configure logging
 logger = logging.getLogger("mtcleanse")
 
@@ -38,69 +40,43 @@ def convert_to_serializable(obj: Any) -> Any:
 
 @dataclass
 class FilteredSamples:
-    """Store samples of filtered text pairs for analysis.
+    """Container for sample text pairs that were filtered out.
 
-    This class stores examples of text pairs that were filtered out during
-    the cleaning process, categorized by the reason for filtering.
+    This class stores examples of text pairs that were filtered out
+    for various reasons, which can be useful for analysis.
 
     Attributes:
-        empty_samples: Samples that were empty after cleaning
-        too_short_samples: Samples that were too short
-        too_long_samples: Samples that were too long
-        word_count_samples: Samples that had too few or too many words
-        length_outliers_samples: Samples identified as length outliers
-        domain_outliers_samples: Samples identified as domain outliers
-        quality_filtered_samples: Samples filtered by quality estimation
+        empty_samples: Pairs that were empty after cleaning
+        too_short_samples: Pairs that were too short
+        too_long_samples: Pairs that were too long
+        word_count_samples: Pairs filtered by word count
+        length_outliers_samples: Pairs identified as length outliers
+        domain_outliers_samples: Pairs identified as domain outliers
+        quality_filtered_samples: Pairs filtered by quality estimation
     """
 
     empty_samples: List[Tuple[str, str]] = field(default_factory=list)
     too_short_samples: List[Tuple[str, str]] = field(default_factory=list)
     too_long_samples: List[Tuple[str, str]] = field(default_factory=list)
     word_count_samples: List[Tuple[str, str]] = field(default_factory=list)
-    length_outliers_samples: List[Tuple[str, str]] = field(
-        default_factory=list
-    )
-    domain_outliers_samples: List[Tuple[str, str]] = field(
-        default_factory=list
-    )
-    quality_filtered_samples: List[Tuple[str, str]] = field(
-        default_factory=list
-    )
+    length_outliers_samples: List[Tuple[str, str]] = field(default_factory=list)
+    domain_outliers_samples: List[Tuple[str, str]] = field(default_factory=list)
+    quality_filtered_samples: List[Tuple[str, str]] = field(default_factory=list)
 
-    def to_dict(self, max_samples: int = 5) -> Dict:
-        """Convert samples to dictionary, limiting each category to max_samples examples.
-
-        Args:
-            max_samples: Maximum number of samples to include per category
+    def to_dict(self) -> Dict:
+        """Convert samples to dictionary format.
 
         Returns:
-            Dictionary of sample categories
+            Dictionary of filtered samples
         """
         return {
-            "empty_samples": [
-                list(pair) for pair in self.empty_samples[:max_samples]
-            ],
-            "too_short_samples": [
-                list(pair) for pair in self.too_short_samples[:max_samples]
-            ],
-            "too_long_samples": [
-                list(pair) for pair in self.too_long_samples[:max_samples]
-            ],
-            "word_count_samples": [
-                list(pair) for pair in self.word_count_samples[:max_samples]
-            ],
-            "length_outliers_samples": [
-                list(pair)
-                for pair in self.length_outliers_samples[:max_samples]
-            ],
-            "domain_outliers_samples": [
-                list(pair)
-                for pair in self.domain_outliers_samples[:max_samples]
-            ],
-            "quality_filtered_samples": [
-                list(pair)
-                for pair in self.quality_filtered_samples[:max_samples]
-            ],
+            "empty_samples": self.empty_samples,
+            "too_short_samples": self.too_short_samples,
+            "too_long_samples": self.too_long_samples,
+            "word_count_samples": self.word_count_samples,
+            "length_outliers_samples": self.length_outliers_samples,
+            "domain_outliers_samples": self.domain_outliers_samples,
+            "quality_filtered_samples": self.quality_filtered_samples,
         }
 
 
@@ -186,6 +162,15 @@ class CleaningStats:
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(self.to_dict(), f, indent=2, ensure_ascii=False)
         logger.info(f"Cleaning statistics saved to: {output_path}")
+
+    def save_to_html(self, output_path: str) -> None:
+        """Save statistics to an HTML report.
+
+        Args:
+            output_path: Path to save the HTML report to
+        """
+        generate_html_report(self.to_dict(), output_path)
+        logger.info(f"HTML report saved to: {output_path}")
 
     def log_stats(self) -> None:
         """Log the cleaning statistics."""

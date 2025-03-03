@@ -94,22 +94,24 @@ class BasicCleaningFilter(Filter):
             flags["empty"] = True
             return "", flags
 
-        # Apply text transformations
+        # Apply regex-based cleanings first
         if self.config.remove_urls:
             text = self.url_pattern.sub(" ", text)
 
         if self.config.remove_emails:
             text = self.email_pattern.sub(" ", text)
 
-        if self.config.normalize_unicode:
-            text = unicodedata.normalize("NFC", text)
-
         if self.config.remove_control_chars:
             text = self.control_char_pattern.sub(" ", text)
+
+        # Apply character-level transformations
+        if self.config.normalize_unicode:
+            text = unicodedata.normalize("NFC", text)
 
         if self.config.lowercase:
             text = text.lower()
 
+        # Handle whitespace last (after other substitutions might have added spaces)
         if self.config.remove_extra_whitespace:
             text = " ".join(text.split())
 
@@ -121,8 +123,7 @@ class BasicCleaningFilter(Filter):
         # Check length constraints
         if len(text) < self.config.min_chars:
             flags["too_short"] = True
-
-        if len(text) > self.config.max_chars:
+        elif len(text) > self.config.max_chars:
             flags["too_long"] = True
 
         return text, flags

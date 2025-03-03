@@ -4,7 +4,7 @@
 import json
 from pathlib import Path
 
-from mtcleanse.cleaning import CleaningConfig, TextCleaner
+from mtcleanse.cleaning import CleaningConfig, ParallelTextCleaner
 from mtcleanse.utils import get_console
 
 console = get_console()
@@ -33,26 +33,40 @@ config = CleaningConfig(
     enable_domain_filtering=False,
     # Enable only quality filtering
     enable_quality_filtering=True,
-    quality_threshold=0.5,
+    quality_threshold=0.5
 )
 
-cleaner = TextCleaner(config)
-cleaned_source, cleaned_target = cleaner.clean_parallel_texts(
-    source_texts, target_texts
-)
+cleaner = ParallelTextCleaner(config)
 
-# Save filtered pairs
+# Create temporary files for input
+source_input = output_dir / "temp_source.txt"
+target_input = output_dir / "temp_target.txt"
 source_output = output_dir / "filtered.src"
 target_output = output_dir / "filtered.tgt"
 
-with open(source_output, "w", encoding="utf-8") as f:
-    f.write("\n".join(cleaned_source))
-with open(target_output, "w", encoding="utf-8") as f:
-    f.write("\n".join(cleaned_target))
+# Write input texts to files
+with open(source_input, "w", encoding="utf-8") as f:
+    f.write("\n".join(source_texts))
+with open(target_input, "w", encoding="utf-8") as f:
+    f.write("\n".join(target_texts))
+
+# Use clean_file instead, which supports HTML report generation
+original_count, cleaned_count = cleaner.clean_file(
+    source_file=str(source_input),
+    target_file=str(target_input),
+    output_source=str(source_output),
+    output_target=str(target_output),
+    html_report=str(output_dir / "report.html")  # Add HTML report here
+)
+
+# Clean up temporary files
+source_input.unlink()
+target_input.unlink()
 
 # Print summary
 console.print("\n[bold green]Filtering completed![/]")
-console.print(f"Original pairs: {len(source_texts)}")
-console.print(f"Filtered pairs: {len(cleaned_source)}")
-console.print(f"Reduction: {(1 - len(cleaned_source)/len(source_texts))*100:.1f}%")
+console.print(f"Original pairs: {original_count}")
+console.print(f"Filtered pairs: {cleaned_count}")
+console.print(f"Reduction: {(1 - cleaned_count/original_count)*100:.1f}%")
 console.print(f"\nOutput files saved to:\n{source_output}\n{target_output}")
+console.print(f"HTML report saved to: {output_dir / 'report.html'}")

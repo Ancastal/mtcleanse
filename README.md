@@ -74,6 +74,21 @@ cleaner = ParallelTextCleaner({
     "enable_domain_filtering": True,
     "domain_contamination": 0.2
 })
+
+# This method returns the cleaned data and the statistics
+clean_source, clean_target, stats = cleaner.clean_texts(
+    source_texts=["Hello world", "This is a test"],
+    target_texts=["Bonjour le monde", "C'est un test"]
+)
+
+# This method saves the cleaned data to disk and generates an HTML report
+cleaner.clean_file(
+    source_file="source.en",
+    target_file="target.fr",
+    output_source="clean_source.en",
+    output_target="clean_target.fr",
+    html_report="report.html"
+)
 ```
 
 ## Development

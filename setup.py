@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="mtcleanse",
-    version="0.2.0",
+    version="0.2.1",
     author="Antonio Castaldo",
     author_email="antonio.castaldo@phd.unipi.it",
     description="Machine Translation Corpus Cleaning and Processing",
@@ -33,6 +33,8 @@ setup(
         "sentence-transformers>=2.0.0",
         "rich>=10.0.0",
         "tqdm>=4.50.0",
+        "jinja2>=3.0.0",
+        "plotly>=5.0.0",
     ],
     extras_require={
         "dev": [
@@ -53,5 +55,8 @@ setup(
         "console_scripts": [
             "mtcleanse-clean=mtcleanse.bin.clean_cli:main",
         ],
+    },
+    package_data={
+        "mtcleanse.cleaning": ["templates/*.html"],
     },
 )

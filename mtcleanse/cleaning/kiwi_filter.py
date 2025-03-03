@@ -150,7 +150,6 @@ class KiwiQualityFilter:
                 f"Failed to convert scores to float. Score examples: {scores[:5]}"
             )
             raise
-        print(scores[:10])
 
         if len(scores) != len(sources):
             logger.error(
